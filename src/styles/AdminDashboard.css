@@ -1,0 +1,53 @@
+.admin-dashboard .card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.admin-dashboard .table {
+    font-size: 0.9rem;
+}
+
+.admin-dashboard .actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.admin-dashboard .password-hash {
+    font-family: monospace;
+    font-size: 0.8rem;
+    background-color: #f8f9fa;
+}
+
+.admin-dashboard .table-responsive {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.admin-dashboard .nav-tabs .nav-link {
+    font-weight: 500;
+}
+
+.user-details .card {
+    margin-bottom: 15px;
+}
+
+.user-details .form-control:read-only {
+    background-color: #f8f9fa;
+}
+
+.user-details .form-text {
+    font-size: 0.8rem;
+}
+
+/* Media queries for mobile responsiveness */
+@media (max-width: 768px) {
+    .admin-dashboard .actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+    }
+    
+    .admin-dashboard .table {
+        font-size: 0.8rem;
+    }
+}
