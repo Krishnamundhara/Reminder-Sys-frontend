@@ -1,15 +1,17 @@
-# User Authentication System Frontend
+# Reminder System Frontend
 
-This is the frontend React application for a user authentication system with admin approval workflow.
+This is the frontend React application for the Reminder System with user authentication, admin approval workflow, and reminder management features.
 
 ## Features
 
-- User registration (signup)
-- User login/logout
-- Admin dashboard
-- User approval by admin
+- User registration with email verification via OTP
+- Secure user authentication (login/logout)
+- Admin dashboard for user management
+- User approval workflow by administrators
 - User profile management
-- Role-based access control
+- Role-based access control (user/admin)
+- Session persistence with auto-refresh
+- Responsive design for all devices
 
 ## Tech Stack
 
