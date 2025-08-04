@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Create axios instance with enhanced configuration for persistent sessions
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://reminder-sys-backend.onrender.com/api';
 
 // Log the API URL in development to help with debugging
 if (process.env.NODE_ENV !== 'production') {
