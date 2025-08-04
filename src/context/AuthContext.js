@@ -36,13 +36,18 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(data.user);
         return data.user;
       } else {
-        // If server says we're not authenticated, clear local storage
+        // If server says we're not authenticated, clear everything
         setCurrentUser(null);
+        localStorage.removeItem('currentUser');
       }
       return null;
     } catch (error) {
       console.error('Error refreshing user data:', error);
-      // Don't clear currentUser on network errors to allow offline functionality
+      if (error.response?.status === 401) {
+        // Clear on 401 unauthorized
+        setCurrentUser(null);
+        localStorage.removeItem('currentUser');
+      }
       return null;
     }
   };

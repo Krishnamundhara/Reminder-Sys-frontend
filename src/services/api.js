@@ -3,15 +3,19 @@ import axios from 'axios';
 // Create axios instance with enhanced configuration for persistent sessions
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+// Log the API URL in development to help with debugging
+if (process.env.NODE_ENV !== 'production') {
+  console.log('API URL:', API_URL);
+}
+
 const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // Enable cookies and authentication headers
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache', // Prevent caching of authentication responses
+    'Cache-Control': 'no-cache',
     'Pragma': 'no-cache'
   },
-  // Don't timeout too quickly on auth requests
   timeout: 10000
 });
 
