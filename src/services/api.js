@@ -19,8 +19,42 @@ const api = axios.create({
   timeout: 10000
 });
 
+// Add response interceptor to handle session expiry
+api.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        await authService.restoreSession();
+        return api(originalRequest);
+      } catch (e) {
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Authentication services
 export const authService = {
+  // Restore session from local storage
+  restoreSession: async () => {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      try {
+        await api.post('/auth/restore-session', { userId: user.id });
+        return true;
+      } catch (error) {
+        console.error('Failed to restore session:', error);
+        localStorage.removeItem('currentUser');
+        throw error;
+      }
+    }
+    return false;
+  },
   // Get authentication status
   getAuthStatus: async () => {
     try {

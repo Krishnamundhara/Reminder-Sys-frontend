@@ -35,16 +35,28 @@ export const AuthProvider = ({ children }) => {
       if (data.authenticated) {
         setCurrentUser(data.user);
         return data.user;
-      } else {
-        // If server says we're not authenticated, clear everything
+      } else if (localStorage.getItem('currentUser')) {
+        // If we have local data but server says not authenticated,
+        // try to restore the session
+        try {
+          await authService.restoreSession();
+          const retryData = await authService.getAuthStatus();
+          if (retryData.authenticated) {
+            setCurrentUser(retryData.user);
+            return retryData.user;
+          }
+        } catch (retryError) {
+          console.error('Failed to restore session:', retryError);
+        }
+        // If restoration fails, clear everything
         setCurrentUser(null);
         localStorage.removeItem('currentUser');
       }
       return null;
     } catch (error) {
       console.error('Error refreshing user data:', error);
+      // Only clear on actual auth errors, not network errors
       if (error.response?.status === 401) {
-        // Clear on 401 unauthorized
         setCurrentUser(null);
         localStorage.removeItem('currentUser');
       }
