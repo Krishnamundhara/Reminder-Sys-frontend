@@ -5,7 +5,7 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SessionHeartbeat from './components/SessionHeartbeat';
 
-import { ThemeProvider } from './context/ThemeContext';
+// Theme provider removed
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -32,10 +32,9 @@ function App() {
   }
 
   return (
-    <ThemeProvider>
-      <div className="page-container">
-        
-        <NavBar />
+    <div className="page-container">
+      
+      <NavBar />
         {/* Session heartbeat component - invisible but keeps sessions alive */}
         {currentUser && <SessionHeartbeat />}
         <div className="content-wrap">
@@ -75,7 +74,6 @@ function App() {
       </div>
       <Footer />
     </div>
-    </ThemeProvider>
   );
 }
 
