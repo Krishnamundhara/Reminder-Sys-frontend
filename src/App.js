@@ -4,6 +4,8 @@ import { Container } from 'react-bootstrap';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SessionHeartbeat from './components/SessionHeartbeat';
+import ThemeToggle from './components/ThemeToggle';
+import { ThemeProvider } from './context/ThemeContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -30,12 +32,14 @@ function App() {
   }
 
   return (
-    <div className="page-container">
-      <NavBar />
-      {/* Session heartbeat component - invisible but keeps sessions alive */}
-      {currentUser && <SessionHeartbeat />}
-      <div className="content-wrap">
-        <Container className="py-4">
+    <ThemeProvider>
+      <div className="page-container">
+        <ThemeToggle />
+        <NavBar />
+        {/* Session heartbeat component - invisible but keeps sessions alive */}
+        {currentUser && <SessionHeartbeat />}
+        <div className="content-wrap">
+          <Container className="py-4">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={currentUser ? <Navigate to="/" /> : <Login />} />
@@ -71,7 +75,10 @@ function App() {
       </div>
       <Footer />
     </div>
+    </ThemeProvider>
   );
 }
+
+export default App;
 
 export default App;

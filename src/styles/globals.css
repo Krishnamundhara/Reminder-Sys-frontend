@@ -1,12 +1,51 @@
 :root {
+  /* Common colors */
   --primary-color: #3a6df0;
   --primary-glow: rgba(58, 109, 240, 0.3);
-  --background-dark: #1f1d2b;
-  --card-bg: #252936;
-  --text-color: #fff;
-  --text-secondary: #8f9297;
-  --border-color: #2f3142;
   --glow-spread: 60px;
+  
+  /* Light theme colors */
+  --background-light: #f5f7fb;
+  --card-bg-light: #ffffff;
+  --text-color-light: #2c3e50;
+  --text-secondary-light: #64748b;
+  --border-color-light: #e2e8f0;
+
+  /* Dark theme colors */
+  --background-dark: #1f1d2b;
+  --card-bg-dark: #252936;
+  --text-color-dark: #fff;
+  --text-secondary-dark: #8f9297;
+  --border-color-dark: #2f3142;
+}
+
+/* Light theme (default) */
+:root[data-theme="light"] {
+  --background: var(--background-light);
+  --card-bg: var(--card-bg-light);
+  --text-color: var(--text-color-light);
+  --text-secondary: var(--text-secondary-light);
+  --border-color: var(--border-color-light);
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+  --background: var(--background-dark);
+  --card-bg: var(--card-bg-dark);
+  --text-color: var(--text-color-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --border-color: var(--border-color-dark);
+}
+
+/* System preference based theme */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background: var(--background-dark);
+    --card-bg: var(--card-bg-dark);
+    --text-color: var(--text-color-dark);
+    --text-secondary: var(--text-secondary-dark);
+    --border-color: var(--border-color-dark);
+  }
 }
 
 body {
