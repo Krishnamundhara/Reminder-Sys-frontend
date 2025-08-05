@@ -12,21 +12,8 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  // Initialize theme from localStorage or system preference
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === 'undefined') return 'light';
-    
-    try {
-      const savedTheme = localStorage.getItem(THEME_KEY);
-      if (savedTheme && ['light', 'dark'].includes(savedTheme)) {
-        return savedTheme;
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    } catch (e) {
-      console.error('Error accessing localStorage:', e);
-      return 'light';
-    }
-  });
+  // Always use light theme
+  const [theme, setTheme] = useState('light');
 
   // Update HTML data-theme attribute when theme changes
   useEffect(() => {
@@ -93,9 +80,9 @@ export const ThemeProvider = ({ children }) => {
     }
   }, []);
 
-  // Toggle theme function
+  // Toggle theme function - always set to light
   const toggleTheme = useCallback(() => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setTheme('light');
   }, []);
 
   return (
