@@ -15,6 +15,7 @@ import UserProfile from './pages/UserProfile';
 import AdminDashboard from './pages/AdminDashboard';
 import PendingUsers from './pages/PendingUsers';
 import NotFound from './pages/NotFound';
+import RemindersPage from './pages/RemindersPage';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -56,6 +57,11 @@ function App() {
             <Route path="/user/profile" element={
               <ProtectedRoute requiredRole="user" requireApproved={true}>
                 <UserProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/user/reminders" element={
+              <ProtectedRoute requiredRole="user" requireApproved={true}>
+                <RemindersPage />
               </ProtectedRoute>
             } />
             <Route path="/admin/dashboard" element={

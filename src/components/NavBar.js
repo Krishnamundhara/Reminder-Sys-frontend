@@ -35,6 +35,7 @@ const NavBar = () => {
                 ) : currentUser.is_approved ? (
                   <>
                     <Nav.Link as={Link} to="/user/dashboard">Dashboard</Nav.Link>
+                    <Nav.Link as={Link} to="/user/reminders">Reminders</Nav.Link>
                     <Nav.Link as={Link} to="/user/profile">Profile</Nav.Link>
                   </>
                 ) : (
