@@ -3,9 +3,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--background-dark);
+  background: var(--background);
   position: relative;
   overflow: hidden;
+  transition: background-color var(--transition-speed) var(--transition-timing);
 }
 
 /* Background glow effects */

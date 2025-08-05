@@ -1,46 +1,54 @@
 .theme-toggle {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  bottom: 2rem;
+  right: 2rem;
+  background: linear-gradient(145deg, var(--card-bg), var(--card-bg-gradient));
+  border: 2px solid var(--border-color);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 1000;
   padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .theme-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 15px var(--primary-glow);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px var(--primary-glow);
+}
+
+.theme-toggle:active {
+  transform: translateY(2px);
 }
 
 .theme-toggle svg {
-  width: 20px;
-  height: 20px;
-  color: var(--text-color);
-  transition: all 0.3s ease;
+  width: 26px;
+  height: 26px;
+  color: var(--theme-toggle-icon);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .theme-toggle:hover svg {
   color: var(--primary-color);
+  transform: rotate(15deg);
 }
 
 .sun-icon, .moon-icon {
-  animation: rotate 0.5s ease;
+  animation: fadeRotate 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-@keyframes rotate {
+@keyframes fadeRotate {
   from {
-    transform: rotate(-180deg);
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
   }
   to {
-    transform: rotate(0);
+    opacity: 1;
+    transform: rotate(0) scale(1);
   }
 }
