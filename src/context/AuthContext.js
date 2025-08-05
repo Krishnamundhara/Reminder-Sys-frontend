@@ -12,21 +12,33 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // Initialize with data from localStorage if available
-  const [currentUser, setCurrentUser] = useState(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
 
-  // Save currentUser to localStorage whenever it changes
+  // Initialize auth state on mount
   useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    } else {
-      localStorage.removeItem('currentUser');
+    const initializeAuth = async () => {
+      try {
+        const data = await authService.getAuthStatus();
+        if (data.authenticated) {
+          setCurrentUser(data.user);
+        } else {
+          setCurrentUser(null);
+        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        setCurrentUser(null);
+      } finally {
+        setLoading(false);
+        setInitialized(true);
+      }
+    };
+
+    if (!initialized) {
+      initializeAuth();
     }
-  }, [currentUser]);
+  }, [initialized]);
 
   // Function to refresh user data from server
   const refreshUserData = async () => {
@@ -88,20 +100,31 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      console.log('Attempting login for:', username);
+      // Clear any existing user data
+      setCurrentUser(null);
+      
+      // Attempt login
       const data = await authService.login({ username, password });
-      if (data.success) {
-        console.log('Login successful, updating user data');
-        // Update state and localStorage in one go
-        setCurrentUser(data.user);
-        return { success: true, user: data.user };
+      
+      if (data.success && data.user) {
+        // Verify the session is active
+        const verifyData = await authService.getAuthStatus();
+        
+        if (verifyData.authenticated) {
+          setCurrentUser(verifyData.user);
+          return { success: true, user: verifyData.user };
+        } else {
+          throw new Error('Session verification failed');
+        }
       }
+      
       return {
         success: false,
         message: data.message || 'Login failed with unknown error'
       };
     } catch (error) {
       console.error('Login error:', error);
+      setCurrentUser(null);
       return {
         success: false,
         message: error.response?.data?.message || 'Login failed. Please try again.'

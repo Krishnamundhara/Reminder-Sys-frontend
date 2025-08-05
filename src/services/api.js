@@ -14,9 +14,11 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache'
+    'Pragma': 'no-cache',
+    'Accept': 'application/json'
   },
-  timeout: 10000
+  timeout: 15000,
+  validateStatus: status => status < 500
 });
 
 // Add response interceptor to handle session expiry
@@ -135,7 +137,23 @@ export const authService = {
   // Login user
   login: async (credentials) => {
     try {
+      // Clear any existing cookies first
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+
       const response = await api.post('/auth/login', credentials);
+      
+      if (response.data?.success && response.data?.user) {
+        // Verify session immediately after login
+        const verifyResponse = await api.get('/auth/status');
+        if (verifyResponse.data?.authenticated) {
+          return response.data;
+        } else {
+          throw new Error('Session verification failed');
+        }
+      }
+      
       return response.data;
     } catch (error) {
       console.error('Login error:', error);
